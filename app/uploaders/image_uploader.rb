@@ -1,10 +1,15 @@
 require "image_processing/mini_magick"
 
 class ImageUploader < Shrine
-  plugin :default_storage, cache: :test_cache, store: :test_store
-  plugin :validation_helpers
+  # OK
+  # plugin :derivatives
+  # plugin :remove_invalid
+  # plugin :validation
+
+  # NG
   plugin :remove_invalid
   plugin :derivatives
+  plugin :validation
 
   Attacher.derivatives do |original|
     magick = ImageProcessing::MiniMagick.source(original)
@@ -16,10 +21,6 @@ class ImageUploader < Shrine
 
   Attacher.validate do
     # DEBUG: always fail
-    errors << "fail"
-    # filepath = file.download.path
-    # if true
-    #   errors << "スキャンをパスできませんでした。スキャン自体に失敗したか、画像ファイルが安全でないと判定されました。"
-    # end
+    # errors << "fail"
   end
 end
